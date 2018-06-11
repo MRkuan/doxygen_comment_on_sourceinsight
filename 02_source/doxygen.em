@@ -17,7 +17,7 @@
 //
 //*****************************************************************************
 
-/** @brief    添加变量上注释
+/** @brief    AddVarUp
   * @param[in]  
   * @param[out]  
   * @return  
@@ -45,7 +45,7 @@ macro AddVarUp()
     SetBufIns( hbuf, ln , strlen(tmp)-3 )  
 }
 
-/** @brief    添加变量右注释
+/** @brief    AddVarRight
   * @param[in]  
   * @param[out]  
   * @return  
@@ -73,7 +73,7 @@ macro AddVarRight()
     SetBufIns( hbuf, ln , strlen(tmp)-3 )  
 }
 
-/** @brief    添加函数头注释
+/** @brief    AddFuncHeader
   * @param[in]  
   * @param[out]  
   * @return  
@@ -91,19 +91,20 @@ macro AddFuncHeader()
 
     ln = GetBufLnCur( hbuf )
 
-    InsBufLine( hbuf, ln + 0, "/** \@brief " )
-    InsBufLine( hbuf, ln + 1, "  *" )
-    InsBufLine( hbuf, ln + 2, "  * \@param " )
-    InsBufLine( hbuf, ln + 3, "  *" )
-    InsBufLine( hbuf, ln + 4, "  * \@return " )
-    InsBufLine( hbuf, ln + 5, "  */" )
+    InsBufLine( hbuf, ln + 0, "/**" )
+    InsBufLine( hbuf, ln + 1, "  * \brief " )
+    InsBufLine( hbuf, ln + 2, "  *" )
+    InsBufLine( hbuf, ln + 3, "  * \param " )
+    InsBufLine( hbuf, ln + 4, "  *" )
+    InsBufLine( hbuf, ln + 5, "  * \return " )
+    InsBufLine( hbuf, ln + 6, "  */" )
     
     // put the insertion point inside the header comment
     SetBufIns( hbuf, ln + 0, 50 )
     
 }
 
-/** @brief    AddFuncHeaderAutoGenerate 添加函数头注释 自动生成
+/** @brief    AddFuncHeaderAutoGenerate
   * @param[in]  
   * @param[out]  
   * @return  
@@ -180,12 +181,13 @@ macro AddFuncHeaderAutoGenerate()
     para=""
    
     func_name = Trim(GetStrSplit(func_str,"("," ",0))
-        
-    InsBufLine( hbuf, func_ln + 0, "/** \\brief @func_name@" )
+
+    InsBufLine( hbuf, func_ln + 0, "/**" )  
+
+    InsBufLine( hbuf, func_ln + 1, "  * \\brief @func_name@" )
     
     
-    
-    InsBufLine( hbuf, func_ln + 1, "  *" )
+    InsBufLine( hbuf, func_ln + 2, "  *" )
     
     empty_str=strmid(func_str,0,0)
     
@@ -197,17 +199,17 @@ macro AddFuncHeaderAutoGenerate()
         
         if("void" == func_name || "" == func_name)
         {
-            InsBufLine( hbuf, func_ln + 2, "  * \\param None" ) 
-            InsBufLine( hbuf, func_ln + 3, "  *" ) 
+            InsBufLine( hbuf, func_ln + 3, "  * \\param None" ) 
+            InsBufLine( hbuf, func_ln + 4, "  *" ) 
         }  
         else
         {
             para=delStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
-            InsBufLine( hbuf, func_ln + 2, "  * \\param @para@" ) 
-            InsBufLine( hbuf, func_ln + 3, "  *" )       
+            InsBufLine( hbuf, func_ln + 3, "  * \\param @para@" ) 
+            InsBufLine( hbuf, func_ln + 4, "  *" )       
         }
-        InsBufLine( hbuf, func_ln + 3+(para_num_max)*2+1, "  * \\return None" )
-        InsBufLine( hbuf, func_ln + 3+(para_num_max)*2+2, "  */" ) 
+        InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+1, "  * \\return None" )
+        InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+2, "  */" ) 
     }
     else
     {    
@@ -216,19 +218,19 @@ macro AddFuncHeaderAutoGenerate()
         {
             para = delStrPointer(Trim(GetStrSplit(func_str,","," ",0)))
             
-            InsBufLine( hbuf, func_ln + 3+(para_num)*2+1, "  * \\param @para@" )         
-            InsBufLine( hbuf, func_ln + 3+(para_num)*2+2, "  *" )      
+            InsBufLine( hbuf, func_ln + 4+(para_num)*2+1, "  * \\param @para@" )         
+            InsBufLine( hbuf, func_ln + 4+(para_num)*2+2, "  *" )      
             
             para_num=para_num+1
             if(para_num == para_num_max)
             {
                 para=delStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
-                InsBufLine( hbuf, func_ln + 3+(para_num)*2+1, "  * \\param @para@" ) 
-                InsBufLine( hbuf, func_ln + 3+(para_num)*2+2, "  *" )
+                InsBufLine( hbuf, func_ln + 4+(para_num)*2+1, "  * \\param @para@" ) 
+                InsBufLine( hbuf, func_ln + 4+(para_num)*2+2, "  *" )
                 
                 func_ln=func_ln+2
-                InsBufLine( hbuf, func_ln + 3+(para_num_max)*2+1, "  * \\return None" )
-                InsBufLine( hbuf, func_ln + 3+(para_num_max)*2+2, "  */" )                 
+                InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+1, "  * \\return None" )
+                InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+2, "  */" )                 
                 break;
             }
             else
@@ -241,7 +243,7 @@ macro AddFuncHeaderAutoGenerate()
     func_ln=func_ln+2
 }
 
-/** @brief    添加文件头注释
+/** @brief    AddFileHeader
   * @param[in]  
   * @param[out]  
   * @return  
@@ -432,7 +434,7 @@ macro AddFileHeader()
     }
 }
 
-/** @brief    添加结构体
+/** @brief    AddStruct
   * @param[in]  
   * @param[out]  
   * @return  
@@ -478,7 +480,7 @@ macro AddStruct()
     InsBufLine( hbuf, ln,"typedef struct @struct_name@ @struct_name@_t;" )
 }
 
-/** @brief    添加结构体演示
+/** @brief    AddStructDemo
   * @param[in]  
   * @param[out]  
   * @return  
@@ -506,7 +508,7 @@ macro AddStructDemo()
 }
 
 
-/** @brief    添加枚举
+/** @brief    AddEnum
   * @param[in]  
   * @param[out]  
   * @return  
@@ -553,7 +555,7 @@ macro AddEnum()
     InsBufLine( hbuf, ln,"typedef enum @enum_name@ @enum_name@_t;" )
 }
 
-/** @brief    添加枚举演示
+/** @brief    AddEnumDemo
   * @param[in]  
   * @param[out]  
   * @return  
