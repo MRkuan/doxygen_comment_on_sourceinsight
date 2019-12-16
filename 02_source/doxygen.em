@@ -180,7 +180,7 @@ macro AddFuncHeaderAutoGenerate()
     return_name=""
     para=""
    
-    func_name = Trim(GetStrSplit(func_str,"("," ",0))
+    //func_name = ToFuncValidName(Trim(GetStrSplit(func_str,"("," ",0)))
 
     InsBufLine( hbuf, func_ln + 0, "/**" )  
 
@@ -204,11 +204,11 @@ macro AddFuncHeaderAutoGenerate()
         }  
         else
         {
-            para=delStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
+            para=DelStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
             InsBufLine( hbuf, func_ln + 3, "  * \\param @para@" ) 
             InsBufLine( hbuf, func_ln + 4, "  *" )       
         }
-        InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+1, "  * \\return None" )
+        InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+1, "  * \\return " )
         InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+2, "  */" ) 
     }
     else
@@ -216,21 +216,19 @@ macro AddFuncHeaderAutoGenerate()
         func_ln=func_ln-2
         while(1)
         {
-            para = delStrPointer(Trim(GetStrSplit(func_str,","," ",0)))
-            
-            InsBufLine( hbuf, func_ln + 4+(para_num)*2+1, "  * \\param @para@" )         
-            InsBufLine( hbuf, func_ln + 4+(para_num)*2+2, "  *" )      
+            para = DelStrPointer(Trim(GetStrSplit(func_str,","," ",0)))           
+            InsBufLine( hbuf, func_ln + 4+(para_num)*1+1, "  * \\param @para@" )           
             
             para_num=para_num+1
             if(para_num == para_num_max)
             {
-                para=delStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
-                InsBufLine( hbuf, func_ln + 4+(para_num)*2+1, "  * \\param @para@" ) 
-                InsBufLine( hbuf, func_ln + 4+(para_num)*2+2, "  *" )
+                para=DelStrPointer(Trim(GetStrSplit(func_str,")"," ",0)))
+                InsBufLine( hbuf, func_ln + 4+(para_num)*1+1, "  * \\param @para@" ) 
+                InsBufLine( hbuf, func_ln + 4+(para_num)*1+2, "  *" )
                 
                 func_ln=func_ln+2
-                InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+1, "  * \\return None" )
-                InsBufLine( hbuf, func_ln + 4+(para_num_max)*2+2, "  */" )                 
+                InsBufLine( hbuf, func_ln + 4+(para_num_max)*1+1, "  * \\return " )
+                InsBufLine( hbuf, func_ln + 4+(para_num_max)*1+2, "  */" )                 
                 break;
             }
             else
@@ -921,10 +919,9 @@ macro GetStrRev(sz)
         }                            
     }
     return return_str
-    
 }
 
-macro delStrPointer(sz)  
+macro DelStrPointer(sz)  
 {  
     i=0
     return_str=sz
@@ -941,6 +938,29 @@ macro delStrPointer(sz)
     }   
 }
 
+macro ToFuncValidName(sz)  
+{  
+    i=0
+    return_str=sz
+  
+   
+    sz_len=strlen(sz)
+
+    while(1) 
+    {
+ 
+        if(return_str[i] == "_")
+        {
+            return_str[i] = " "
+        }          
+        i=i+1
+        if(i>=sz_len)
+        {    
+            break
+        }                            
+    }
+    return return_str
+}  
 
 //*****************************************************************************
 //
