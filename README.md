@@ -3,7 +3,7 @@ source in sight comment base on doxygen
 
 ## 2018年5月7日11:27:00
 
-加入陈杨参考 注释,准备按照标准文档[doxygen](http://www.doxygen.nl/)进行注释
+加入参考 注释,准备按照标准文档[doxygen](http://www.doxygen.nl/)进行注释
 
 一些参考网页
 
